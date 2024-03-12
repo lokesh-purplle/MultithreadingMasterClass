@@ -3,6 +3,9 @@ security-check:
   image: python:3.13.0a4-alpine3.19
   services:
     - docker:dind
+  except:
+    - master
+    - main
   rules:
     - if: $CI_PIPELINE_SOURCE == "merge_request_event"
     - if: $CI_COMMIT_BRANCH !~ ^(main|master)
