@@ -3,8 +3,10 @@ security-check:
   image: python:3.13.0a4-alpine3.19
   services:
     - docker:dind
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  only:
+    refs:
+      - branches
+      - merge_request
   script:
     - |
         #!/bin/sh -x
