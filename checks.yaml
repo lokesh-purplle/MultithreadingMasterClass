@@ -5,7 +5,6 @@ security-check:
     - docker:dind
   only:
     refs:
-      - branches
       - merge_request
   script:
     - |
