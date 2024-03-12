@@ -1,0 +1,28 @@
+security-check:
+  stage: check
+  image: python:3.13.0a4-alpine3.19
+  services:
+    - docker:dind
+  script:
+    - |
+        #!/bin/sh -x
+        apk add jq
+        apk add git
+        pip install detect-secrets
+        files=$(git diff --name-only HEAD^ | tr '\n' ' ')
+        echo "##################################"
+        echo $files
+        echo "detect-secrets  scan  $files"
+        echo "##################################"
+        detect-secrets  scan  $files > data
+        cat data
+        len=$(jq '.results | length' < data)
+        if [[ $len -gt 0 ]]; then
+          jq '.results' < data
+          exit 1
+        else
+          echo "all good here, hno secret found in recent commit"
+          exit 0
+        fi
+        echo $CI_BUILDS_DIR
+        pwd
