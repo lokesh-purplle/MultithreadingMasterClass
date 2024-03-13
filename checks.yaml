@@ -1,5 +1,5 @@
 security-check:
-  stage: check
+  stage: .pre
   image: python:3.13.0a4-alpine3.19
   services:
     - docker:dind
